@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors({credentials: true, origin: "http://localhost:3000"})); 
 
 // DB conection 
-
+require("./config/db.js");
 
 // router 
 const router = require("./routes/Routes");
@@ -25,5 +25,4 @@ app.use(router);
 
 app.listen(port,() => {
    console.log(`Servidor rodando na porta ${port}`);
-})
-
+});
