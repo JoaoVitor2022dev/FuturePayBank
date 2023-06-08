@@ -46,8 +46,34 @@ const register = async (req, res) => {
    res.status(201).json({ _id: newUser._id, token: geretorToken(newUser._id)}); 
 }
 
+// Sing user login
+
+const login = async (req, res) => {
+    
+    const { email, password } = req.body 
+
+    // check email exist 
+    const user = await User.findOne({email: email}) 
+
+    if (!user) {
+        res.status(422).json({ errors: ["O email que voce colocou nao existe"] })
+    }
+    
+    // check password
+    if (!(await bcryptjs.compare(password, user.password))) {
+        res.status(422).json({ errors: ["A senha esta incorreta!"]})
+        return
+    }
+  
+    // return user with token 
+    res.status(201).json({ _id: user._id, token: geretorToken(user._id)}); 
+}
+
+
+
 module.exports = { 
     register,
+    login
 }
 
 
