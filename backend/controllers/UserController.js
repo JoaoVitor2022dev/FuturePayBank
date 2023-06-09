@@ -69,11 +69,21 @@ const login = async (req, res) => {
     res.status(201).json({ _id: user._id, token: geretorToken(user._id)}); 
 }
 
+//  get user a token 
+
+const getUserCurrent = async (req, res) => {
+    const user = req.user; 
+ 
+    console.log(user);
+
+    res.status(201).json(user)
+}; 
 
 
 module.exports = { 
     register,
-    login
+    login,
+    getUserCurrent
 }
 
 
