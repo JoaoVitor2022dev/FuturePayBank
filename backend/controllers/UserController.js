@@ -70,20 +70,50 @@ const login = async (req, res) => {
 }
 
 //  get user a token 
-
 const getUserCurrent = async (req, res) => {
     const user = req.user; 
- 
+
+    res.status(201).json(user); 
+}; 
+
+
+// Editing user data
+const updateDataUser = async (req, res) => {
+    
+    const { name, password } = req.body; 
+
+    // get user req
+    const reqUser = req.user
+
+    const user = await User.findById(reqUser._id.toString()).select("-password");
+
     console.log(user);
 
-    res.status(201).json(user)
+    if (name) {
+        user.name = name;
+    }
+
+    // password
+    if (password) {
+        // gerate password
+        const salt = await bcryptjs.genSalt(); 
+        const passwordHash = await bcryptjs.hash(password,salt)
+        
+        user.password = passwordHash;
+    }
+
+    await user.save();
+
+    // res 
+    res.status(200).json(user); 
 }; 
 
 
 module.exports = { 
     register,
     login,
-    getUserCurrent
+    getUserCurrent,
+    updateDataUser
 }
 
 

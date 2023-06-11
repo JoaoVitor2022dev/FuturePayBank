@@ -29,9 +29,11 @@ const userCreateValidation = () => {
     ]
 }
 
+// validation login
+
 const userLoginValidation = () => {
    return [
-     body("email")
+     body("name")
      .isString()
      .withMessage("O email é obrigatório")
      .isEmail()
@@ -44,7 +46,23 @@ const userLoginValidation = () => {
    ]
 }; 
 
+// validation update data 
+const userUpdateValidation = () => {
+    return [
+        body("name")
+        .optional()
+        .isLength({ min: 3})
+        .withMessage("O nome precisa de pelo menos 3 caracteris"),
+        body("password")
+        .optional()
+        .isLength({ min: 5 })
+        .withMessage("A senha deve ter no minimo 5 caracteris!")
+    ]
+};
+
+
 module.exports = {
     userCreateValidation,
-    userLoginValidation
+    userLoginValidation,
+    userUpdateValidation
 }

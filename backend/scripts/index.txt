@@ -1,0 +1,24 @@
+// 1 - fazer as config do projeto e baixar as depedencias 
+
+// 2 - criar os model e  a concencao com o banco; 
+
+// 3- config do postman e segurança com .env 
+
+    Area de desenvolvimento
+
+// 1 - rota de Cadastro 
+// 2 - rota de login 
+// 3 - rota de captura usuario pelo Token - para o perfil dele... 
+// 4 - rota de editar usuario - pedente ainda...
+
+midleswares 
+
+// 1 - authGaurd - verificaçao do TOKEN 
+// 2 - handleValidation - tratamento de erros 
+// 3 - userValidation - tratamento de campos e validaçao dos campos de inputs;
+
+
+
+
+
+

@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 const AccountSchema = new Schema({
      Accountname: String,
-     username: String,
      accountBalance: Number,
      userId: Object.userId,
      userName: String,
