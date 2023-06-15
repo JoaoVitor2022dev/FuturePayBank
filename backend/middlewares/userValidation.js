@@ -33,7 +33,7 @@ const userCreateValidation = () => {
 
 const userLoginValidation = () => {
    return [
-     body("name")
+     body("email")
      .isString()
      .withMessage("O email é obrigatório")
      .isEmail()

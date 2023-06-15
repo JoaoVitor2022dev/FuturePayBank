@@ -58,13 +58,13 @@ const login = async (req, res) => {
     if (!user) {
         res.status(422).json({ errors: ["O email que voce colocou nao existe"] })
     }
+
+    console.log(user);
     
-    // check password
     if (!(await bcryptjs.compare(password, user.password))) {
-        res.status(422).json({ errors: ["A senha esta incorreta!"]})
-        return
-    }
-  
+        res.status(422).json({ errors: [`${user.name} sua senha esta incorreta.`]});
+        return;
+   }
     // return user with token 
     res.status(201).json({ _id: user._id, token: geretorToken(user._id)}); 
 }
@@ -109,11 +109,38 @@ const updateDataUser = async (req, res) => {
 }; 
 
 
+// get user by id 
+
+const getUserById = async (req, res) => { 
+    
+    const { id } = req.params;
+
+    console.log(id);
+  
+     try { 
+    
+        const user = await User.findById(id.toString()).select("-password"); 
+
+        // check user
+        if (!user) {
+           res.status(422).json({ errors: ["Usuário não foi encontrado."]})
+        }
+
+        res.status(201).json(user); 
+
+     } catch (error) {
+        res.status(404).json({ errors: ["Usuário não existe."] });
+     } 
+
+}
+
+
 module.exports = { 
     register,
     login,
     getUserCurrent,
-    updateDataUser
+    updateDataUser,
+    getUserById
 }
 
 
