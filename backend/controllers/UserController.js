@@ -115,10 +115,7 @@ const getUserById = async (req, res) => {
     
     const { id } = req.params;
 
-    console.log(id);
-  
-     try { 
-    
+    try {    
         const user = await User.findById(id.toString()).select("-password"); 
 
         // check user
@@ -131,7 +128,6 @@ const getUserById = async (req, res) => {
      } catch (error) {
         res.status(404).json({ errors: ["Usuário não existe."] });
      } 
-
 }
 
 
