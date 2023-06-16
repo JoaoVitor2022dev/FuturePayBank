@@ -7,8 +7,8 @@ const accountCreateValidation = () => {
        .withMessage("O nome para a conta é obrigatorio")
        .isLength({ min : 3 })
        .withMessage("O nome da conta deve ter mais de 3 caracteres"),
-       body("cpf")
-       .isNumeric()
+        body("cpf")
+       .isString()
        .withMessage("O CPF é obrigatorio para criar a conta!")
        .isLength({ min: 11 })
        .withMessage("CPF inválido!"),

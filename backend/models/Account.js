@@ -6,7 +6,7 @@ const AccountSchema = new Schema({
      accountBalance: Number,
      userId: mongoose.ObjectId,
      userName: String,
-     cpf: Number,
+     cpf: String,
      accountpassword: String,
 },
 {

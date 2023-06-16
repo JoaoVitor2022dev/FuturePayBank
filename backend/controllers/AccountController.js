@@ -1,10 +1,37 @@
 const Account = require("../models/Account");
 const User = require("../models/User");
 const mongoose = require("mongoose"); 
+const bcryptjs = require("bcryptjs");
+
 
 // Create an account 
-const createAccount = (req, res) => {
-   res.send("rota pegando...");
+const createAccount =  async (req, res) => {
+    
+    const { accountname, cpf, accountpassword } =  req.body; 
+    
+    const reqUser = req.user; 
+    
+    const user = await User.findById(reqUser._id); 
+
+    // Generate password hash 
+    const salt = await bcryptjs.genSalt(); 
+    const passwordHash = await bcryptjs.hash( accountpassword, salt); 
+
+    const newAccount = await Account.create({
+        accountname,
+        cpf,
+        accountpassword: passwordHash,
+        userId: user._id, 
+        userName: user.name
+    })
+
+    // if photo was created successfully, return data 
+    if (!newAccount) {
+        res.status(422).json({errors:["Houve um problema, por favor tente novamente mais tarde."]})
+        return 
+    }
+
+    res.status(201).json(newAccount);    
 };
 
 module.exports = { 
