@@ -19,12 +19,12 @@ const register = async (req, res) => {
 
     // check if the user email already exists in the database
     const user = await User.findOne({email}); 
-
+ 
     if (user) {
-        res.status(422).json({ errors: ["Por favor, utilize outra senha"] });
+        res.status(401).json({ errors: ["O usuario já existe!"]});
         return
     }
- 
+
     // Gerenate password hash 
     const salt =  await bcryptjs.genSalt(); 
     const passwordHash = await bcryptjs.hash(password, salt);
@@ -118,9 +118,11 @@ const getUserById = async (req, res) => {
     try {    
         const user = await User.findById(id.toString()).select("-password"); 
 
+        console.log(user);
+
         // check user
         if (!user) {
-           res.status(422).json({ errors: ["Usuário não foi encontrado."]})
+           res.status(422).json({ errors: ["Usuário não foi encontrado."]});
         }
 
         res.status(201).json(user); 
@@ -129,7 +131,6 @@ const getUserById = async (req, res) => {
         res.status(404).json({ errors: ["Usuário não existe."] });
      } 
 }
-
 
 module.exports = { 
     register,
