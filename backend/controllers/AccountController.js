@@ -12,14 +12,13 @@ const createAccount =  async (req, res) => {
     const reqUser = req.user; 
     
     const user = await User.findById(reqUser._id); 
+ 
+    // check if the user has an account
+    const account = await Account.findOne({ userId: reqUser._id });
 
-    // check if the user had already created an account 
-    const account = await Account.find({ userId: user._id}); 
-
-    // check if user exists
     if (account) {
-        res.status(401).json({ errors: ["A conta já existe!"]})
-        return; 
+        res.status(401).json({ errors: ["Você já tem conta"] }); 
+        return
     }
 
     // Generate password hash 
@@ -34,7 +33,6 @@ const createAccount =  async (req, res) => {
         userName: user.name
     })
 
-    // if photo was created successfully, return data 
     if (!newAccount) {
         res.status(422).json({errors:["Houve um problema, por favor tente novamente mais tarde."]});
         return; 
