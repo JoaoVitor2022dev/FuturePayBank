@@ -23,10 +23,11 @@ const createAccount =  async (req, res) => {
 
     // Generate password hash 
     const salt = await bcryptjs.genSalt(); 
-    const passwordHash = await bcryptjs.hash( accountpassword, salt);
+    const passwordHash = await bcryptjs.hash(accountpassword, salt);
     
     const newAccount = await Account.create({
         accountname,
+        accountBalance: 0,
         cpf,
         accountpassword: passwordHash,
         userId: user._id, 
@@ -37,11 +38,25 @@ const createAccount =  async (req, res) => {
         res.status(422).json({errors:["Houve um problema, por favor tente novamente mais tarde."]});
         return; 
     }    
-    res.status(201).json(newAccount);
+    res.status(201).json({ _id: newAccount._id });
 };
 
+
+const checkAccountBalance = async (req, res) => {
+    const reqUser = req.user
+
+    const account = await Account.findOne({ userId: reqUser._id }).select("-accountpassword");
+
+    if (!account) {
+       res.status(401).json({ errors: ["Opa! você ainda não tem conta digital"]}); 
+    }
+
+    res.status(201).json(account);  
+}; 
+
 module.exports = { 
-    createAccount 
+    createAccount,
+    checkAccountBalance 
 }
 
 
