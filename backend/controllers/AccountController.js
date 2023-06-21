@@ -41,7 +41,6 @@ const createAccount =  async (req, res) => {
     res.status(201).json({ _id: newAccount._id });
 };
 
-
 const checkAccountBalance = async (req, res) => {
     const reqUser = req.user
 
@@ -54,9 +53,43 @@ const checkAccountBalance = async (req, res) => {
     res.status(201).json(account);  
 }; 
 
+
+const depositAccount = async (req, res) => {
+    
+    const { cpf, accountpassword, amount } = req.body
+
+    const account = await Account.findOne({ cpf: cpf });  
+
+    if (!account) {
+        res.status(401).json({ errors: ["O cpf inválido!"] }); 
+        return; 
+    }
+
+    if (account.cpf !== cpf) {
+        res.status(401).json({ errors: ["O Cpf nao tem conta!"]});    
+        return 
+    }
+
+    if (!(await bcryptjs.compare(accountpassword, account.accountpassword))) {
+        res.status(401).json({ errors: ["A senha esta incorreta!"] }); 
+        return;
+    }
+    
+    if (amount) {
+        account.accountBalance =  account.accountBalance  + amount; 
+    } 
+    
+    await account.save();
+  
+    res.status(201).json({ errors: [`Deposito concluido com sucesso, foi depositado o valor de ${amount} reias`]});
+}
+
+
+
 module.exports = { 
     createAccount,
-    checkAccountBalance 
+    checkAccountBalance,
+    depositAccount 
 }
 
 
