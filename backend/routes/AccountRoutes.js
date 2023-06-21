@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 // controller 
-const {createAccount, checkAccountBalance } = require("../controllers/AccountController");
+const {createAccount, checkAccountBalance, depositAccount } = require("../controllers/AccountController");
 
 // middlewares
-const { accountCreateValidation } = require("../middlewares/accountValidation");
+const { accountCreateValidation, depositAccountValidation } = require("../middlewares/accountValidation");
 
 // for error checking, and validate next action 
 const validate = require("../middlewares/handleValidation");
@@ -16,6 +16,7 @@ const authGuard = require("../middlewares/authGuard");
 // router 
 router.post("/createaccount", authGuard, accountCreateValidation(), validate, createAccount);
 router.get("/checkAccountBalance", authGuard, validate, checkAccountBalance); 
+router.put("/depositAccount",authGuard ,depositAccountValidation(), validate, depositAccount);
 
 
 

@@ -20,6 +20,23 @@ const accountCreateValidation = () => {
     ]; 
 }; 
 
+const depositAccountValidation = () => {
+   return [
+    body("cpf")
+     .isString()
+     .withMessage("O cpf é obrigatório"), 
+    body("accountpassword")
+     .isString()
+     .withMessage("A senha é obrigatória")
+     .isLength()
+     .withMessage("A senha deve ter 4 dígtos"),
+    body("amount")
+    .isNumeric()
+    .withMessage("O valor tem do deposito é obrigatorio!")  
+   ] 
+};
+
 module.exports = { 
-    accountCreateValidation
+    accountCreateValidation,
+    depositAccountValidation
 }
