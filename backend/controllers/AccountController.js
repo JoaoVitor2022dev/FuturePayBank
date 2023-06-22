@@ -61,12 +61,12 @@ const depositAccount = async (req, res) => {
     const account = await Account.findOne({ cpf: cpf });  
 
     if (!account) {
-        res.status(401).json({ errors: ["O cpf inválido!"] }); 
+        res.status(401).json({ errors: ["A conta nao existe!"] }); 
         return; 
     }
 
     if (account.cpf !== cpf) {
-        res.status(401).json({ errors: ["O Cpf nao tem conta!"]});    
+        res.status(401).json({ errors: ["O Cpf não cadastrado!"]});    
         return 
     }
 
@@ -85,11 +85,49 @@ const depositAccount = async (req, res) => {
 }
 
 
+const withdrawValueAccount =  async (req, res) => {
+ 
+    const { cpf, accountpassword, amount } = req.body
+
+    const account = await Account.findOne({ cpf: cpf });  
+
+    if (!account) {
+        res.status(401).json({ errors: ["A conta nao existe!"] }); 
+        return; 
+    }
+
+    if (account.cpf !== cpf) {
+        res.status(401).json({ errors: ["O Cpf não cadastrado!"]});    
+        return 
+    }
+
+    if (!(await bcryptjs.compare(accountpassword, account.accountpassword))) {
+        res.status(401).json({ errors: ["A senha esta incorreta!"] }); 
+        return;
+    }
+
+
+
+    if (amount > account.accountBalance) {
+        res.status(401).json({  errors: ["Nao há essa quantidade de dinheiro no seu saldo"] }); 
+        return; 
+    }
+      
+    if (amount) {
+        account.accountBalance =  account.accountBalance - amount; 
+    } 
+
+    await account.save();
+  
+    res.status(201).json({ errors: [`Saque concluido com sucesso, foi sacado da sua conta o valor de ${amount} reias`]});
+}; 
+
 
 module.exports = { 
     createAccount,
     checkAccountBalance,
-    depositAccount 
+    depositAccount,
+    withdrawValueAccount
 }
 
 
