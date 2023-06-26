@@ -22,8 +22,16 @@ midleswares
 
 // 1 - finalizado a funcionalidade de criar conta...
 // testar a nova api com outro usuarios... (); 
+// finalizado funcionalidadede sacar e deposiatra 
+
+// parte dois do projeto 
 
 
+trasnferencia de dinheiro... 
+
+/ 1 - fazer os peparativos do projeto
+
+// fazer deplouy 
 
 
 
