@@ -56,7 +56,11 @@ const userUpdateValidation = () => {
         body("password")
         .optional()
         .isLength({ min: 5 })
-        .withMessage("A senha deve ter no minimo 5 caracteris!")
+        .withMessage("A senha deve ter no minimo 5 caracteris!"),
+        body("email")
+        .optional()
+        .isEmail()
+        .withMessage("O email tem que ser válido"), 
     ]
 };
 

@@ -106,8 +106,6 @@ const withdrawValueAccount =  async (req, res) => {
         return;
     }
 
-
-
     if (amount > account.accountBalance) {
         res.status(401).json({  errors: ["Nao há essa quantidade de dinheiro no seu saldo"] }); 
         return; 
@@ -120,7 +118,7 @@ const withdrawValueAccount =  async (req, res) => {
     await account.save();
   
     res.status(201).json({ errors: [`Saque concluido com sucesso, foi sacado da sua conta o valor de ${amount} reias`]});
-}; 
+};
 
 
 module.exports = { 

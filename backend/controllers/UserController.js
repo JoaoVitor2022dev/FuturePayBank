@@ -80,31 +80,39 @@ const getUserCurrent = async (req, res) => {
 // Editing user data
 const updateDataUser = async (req, res) => {
     
-    const { name, password } = req.body; 
+    const { name, password, email } = req.body; 
 
     // get user req
     const reqUser = req.user
 
     const user = await User.findById(reqUser._id.toString()).select("-password");
 
-    console.log(user);
-
     if (name) {
         user.name = name;
+    }
+
+    const existingEmail = User.findOne({ email: email });
+
+    if (user.email !== email && existingEmail) {
+        res.status(401).json({ errors: ["Por favor, use outro email!"]});
+        return;    
+    }
+
+    if (email) {
+        user.email = email; 
     }
 
     // password
     if (password) {
         // gerate password
         const salt = await bcryptjs.genSalt(); 
-        const passwordHash = await bcryptjs.hash(password,salt)
+        const passwordHash = await bcryptjs.hash(password,salt); 
         
         user.password = passwordHash;
     }
 
     await user.save();
 
-    // res 
     res.status(200).json(user); 
 }; 
 
@@ -118,17 +126,15 @@ const getUserById = async (req, res) => {
     try {    
         const user = await User.findById(id.toString()).select("-password"); 
 
-        console.log(user);
-
         // check user
         if (!user) {
-           res.status(422).json({ errors: ["Usuário não foi encontrado."]});
+           res.status(422).json({ errors:["Usuário não foi encontrado."]});
         }
 
         res.status(201).json(user); 
 
      } catch (error) {
-        res.status(404).json({ errors: ["Usuário não existe."] });
+        res.status(404).json({ errors:["Usuário não existe."]});
      } 
 }
 
